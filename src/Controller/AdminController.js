@@ -1,7 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-import { User, Astrologer, Booking, Payment, ContactMessage, AboutPage, BlogPost, ServiceRequest } from '../Model/index.js';
+import { User, Astrologer, Booking, Payment, ContactMessage, AboutPage, LegalPage, BlogPost, ServiceRequest } from '../Model/index.js';
+import { ALLOWED_SLUGS, DEFAULTS } from './LegalPageController.js';
 import { slugify } from './BlogController.js';
 import { generateProkeralaPdf } from '../Services/ProkeralaService.js';
 
@@ -138,6 +139,69 @@ class AdminController {
         data: {
           title: row.title,
           subtitle: row.subtitle,
+          content: row.content,
+          updated_at: row.updated_at,
+        },
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async getLegal(req, res, next) {
+    try {
+      const { slug } = req.params;
+      if (!ALLOWED_SLUGS.includes(slug)) {
+        req.errorStatus = 404;
+        throw new Error('Page not found');
+      }
+      let row = await LegalPage.findOne({ where: { slug } });
+      if (!row) {
+        const d = DEFAULTS[slug];
+        row = await LegalPage.create({ slug, title: d.title, content: d.content });
+      }
+      res.json({
+        status: true,
+        data: {
+          slug: row.slug,
+          title: row.title,
+          content: row.content,
+          updated_at: row.updated_at,
+        },
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async updateLegal(req, res, next) {
+    try {
+      const { slug } = req.params;
+      if (!ALLOWED_SLUGS.includes(slug)) {
+        req.errorStatus = 404;
+        throw new Error('Page not found');
+      }
+      const { title, content } = req.body;
+      let row = await LegalPage.findOne({ where: { slug } });
+      if (!row) {
+        const d = DEFAULTS[slug];
+        row = await LegalPage.create({
+          slug,
+          title: (title || d.title).trim(),
+          content: (content ?? d.content).trim(),
+        });
+      } else {
+        row.title = (title || row.title).trim();
+        row.content = (content ?? row.content).trim();
+        row.updated_at = new Date();
+        await row.save();
+      }
+      res.json({
+        status: true,
+        message: 'Legal page updated',
+        data: {
+          slug: row.slug,
+          title: row.title,
           content: row.content,
           updated_at: row.updated_at,
         },

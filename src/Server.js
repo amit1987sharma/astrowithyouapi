@@ -14,6 +14,7 @@ import HoroscopeRouter from './Routers/HoroscopeRouter.js';
 import ReportRouter from './Routers/ReportRouter.js';
 import ContactRouter from './Routers/ContactRouter.js';
 import AboutRouter from './Routers/AboutRouter.js';
+import LegalRouter from './Routers/LegalRouter.js';
 import BlogRouter from './Routers/BlogRouter.js';
 import ServiceRequestRouter from './Routers/ServiceRequestRouter.js';
 class Server{
@@ -58,6 +59,7 @@ class Server{
         this.app.use('/api/reports', ReportRouter);
         this.app.use('/api/contact', ContactRouter);
         this.app.use('/api/about', AboutRouter);
+        this.app.use('/api/legal', LegalRouter);
         this.app.use('/api/blog', BlogRouter);
         this.app.use('/api/service-requests', ServiceRequestRouter);
     }

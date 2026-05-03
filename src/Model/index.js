@@ -6,6 +6,7 @@ import Horoscope from './Horoscope.js';
 import Report from './Report.js';
 import ContactMessage from './ContactMessage.js';
 import AboutPage from './AboutPage.js';
+import LegalPage from './LegalPage.js';
 import BlogPost from './BlogPost.js';
 import ServiceRequest from './ServiceRequest.js';
 
@@ -28,5 +29,5 @@ Payment.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 User.hasMany(Report, { foreignKey: 'user_id', as: 'reports' });
 Report.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
-export { User, Astrologer, Booking, Payment, Horoscope, Report, ContactMessage, AboutPage, BlogPost, ServiceRequest };
+export { User, Astrologer, Booking, Payment, Horoscope, Report, ContactMessage, AboutPage, LegalPage, BlogPost, ServiceRequest };
 
