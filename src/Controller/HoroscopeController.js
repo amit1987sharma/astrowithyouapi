@@ -59,6 +59,20 @@ class HoroscopeController {
       next(e);
     }
   }
+
+  static async destroy(req, res, next) {
+    try {
+      const item = await Horoscope.findByPk(req.params.id);
+      if (!item) {
+        req.errorStatus = 404;
+        throw new Error('Horoscope not found');
+      }
+      await item.destroy();
+      res.json({ status: true, message: 'Horoscope deleted' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export default HoroscopeController;

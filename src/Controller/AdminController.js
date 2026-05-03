@@ -400,6 +400,19 @@ class AdminController {
     }
   }
 
+  static uploadTestimonialAvatar(req, res, next) {
+    try {
+      if (!req.processedFiles || !req.processedFiles.original) {
+        req.errorStatus = 400;
+        throw new Error('No image file received');
+      }
+      const url = '/uploads/testimonials/' + path.basename(req.processedFiles.original);
+      res.json({ status: true, url });
+    } catch (e) {
+      next(e);
+    }
+  }
+
 }
 
 export default AdminController;

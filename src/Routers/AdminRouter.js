@@ -3,6 +3,8 @@ import AdminController from '../Controller/AdminController.js';
 import AboutValidator from '../Validators/AboutValidator.js';
 import LegalPageValidator from '../Validators/LegalPageValidator.js';
 import BlogValidator from '../Validators/BlogValidator.js';
+import TestimonialValidator from '../Validators/TestimonialValidator.js';
+import TestimonialController from '../Controller/TestimonialController.js';
 import GlobalMiddleware from '../Middleware/GlobalMiddleware.js';
 import { upload, processImage } from '../Middleware/Upload.js';
 
@@ -17,6 +19,14 @@ router.post(
   upload.single('image'),
   processImage,
   AdminController.uploadBlogImage
+);
+
+router.post(
+  '/upload/testimonials',
+  (req, res, next) => { req.destination = 'testimonials'; next(); },
+  upload.single('image'),
+  processImage,
+  AdminController.uploadTestimonialAvatar
 );
 
 router.get('/users', AdminController.users);
@@ -34,6 +44,10 @@ router.get('/blog/:id', AdminController.getBlog);
 router.post('/blog', BlogValidator.create(), GlobalMiddleware.checkValidationError, AdminController.createBlog);
 router.put('/blog/:id', BlogValidator.update(), GlobalMiddleware.checkValidationError, AdminController.updateBlog);
 router.delete('/blog/:id', AdminController.deleteBlog);
+router.get('/testimonials', TestimonialController.listAll);
+router.post('/testimonials', TestimonialValidator.create(), GlobalMiddleware.checkValidationError, TestimonialController.create);
+router.put('/testimonials/:id', TestimonialValidator.update(), GlobalMiddleware.checkValidationError, TestimonialController.update);
+router.delete('/testimonials/:id', TestimonialController.destroy);
 router.get('/service-requests', AdminController.listServiceRequests);
 router.post('/service-requests/:id/generate', AdminController.generateServiceRequestReport);
 

@@ -17,6 +17,7 @@ import AboutRouter from './Routers/AboutRouter.js';
 import LegalRouter from './Routers/LegalRouter.js';
 import BlogRouter from './Routers/BlogRouter.js';
 import ServiceRequestRouter from './Routers/ServiceRequestRouter.js';
+import TestimonialRouter from './Routers/TestimonialRouter.js';
 class Server{
     app = ''
     constructor(){
@@ -61,6 +62,7 @@ class Server{
         this.app.use('/api/about', AboutRouter);
         this.app.use('/api/legal', LegalRouter);
         this.app.use('/api/blog', BlogRouter);
+        this.app.use('/api/testimonials', TestimonialRouter);
         this.app.use('/api/service-requests', ServiceRequestRouter);
     }
 
